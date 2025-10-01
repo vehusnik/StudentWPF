@@ -1,10 +1,12 @@
 ﻿<Window x:Class="StudentWPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         Title="MainWindow" Height="450" Width="800">
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
@@ -12,7 +14,7 @@
                   Grid.Row="0"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
-                  IsReadOnly="True">
+                  IsReadOnly="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID"        Binding="{Binding Id}"        Width="70"/>
                 <DataGridTextColumn Header="Jméno"     Binding="{Binding FirstName}" Width="*"/>
@@ -22,7 +24,41 @@
                 <DataGridTextColumn Header="Vytvořeno" Binding="{Binding CreatedAt, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" Width="180"/>
             </DataGrid.Columns>
         </DataGrid>
-        
-        <TextBlock Grid.Row="1" Margin="0,8,0,0" Text="ÚKOL 1: pouze zobrazení dat."/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
+            <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                <Label Content="Jméno"/>
+                <TextBox x:Name="TxtFirstName" Width="150"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                <Label Content="Příjmení"/>
+                <TextBox x:Name="TxtLastName" Width="150"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                <ComboBox x:Name="TxtYear" IsEditable="False" SelectedIndex="-1" ToolTip="Vyberte ročník 1–6">
+                    <ComboBox.ItemsSource>
+                        <x:Array Type="{x:Type sys:Int32}">
+                            <sys:Int32>1</sys:Int32>
+                            <sys:Int32>2</sys:Int32>
+                            <sys:Int32>3</sys:Int32>
+                            <sys:Int32>4</sys:Int32>
+                            <sys:Int32>5</sys:Int32>
+                            <sys:Int32>6</sys:Int32>
+                        </x:Array>
+                    </ComboBox.ItemsSource>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                <Label Content="E‑mail"/>
+                <TextBox x:Name="TxtEmail" Width="220"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <Label Content=" "/>
+                <Button x:Name="BtnAddStudent" Content="Přidat studenta" Click="BtnAddStudent_Click"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="2"  Orientation="Horizontal" Margin="0,10,0,0">
+  <Button x:Name="BtnSave"           Content="💾 Uložit"  Click="BtnSave_Click"   Margin="0,0,8,0"/>
+  <Button x:Name="BtnDeleteSelected" Content="Smazat vybraného" Click="BtnDeleteSelected_Click"/>
+</StackPanel>
     </Grid>
 </Window>

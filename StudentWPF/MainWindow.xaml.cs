@@ -28,10 +28,10 @@ namespace StudentWPF
 
         public MainWindow()
         {
-        InitializeComponent();
+            InitializeComponent();
             _db.EnsureCreatedAndSeed();
 
-            foreach (var s in _db.Students.OrderBy(x=>x.Id).ToList())
+            foreach (var s in _db.Students.OrderBy(x => x.Id).ToList())
             {
                 _students.Add(s);
             }
@@ -46,6 +46,51 @@ namespace StudentWPF
         {
             _db.Dispose();
             base.OnClosed(e);
+        }
+        private void BtnAddStudent_Click(object sender, RoutedEventArgs e)
+        {
+            string firstName = (TxtFirstName.Text ?? string.Empty).Trim();
+            string lastName = (TxtLastName.Text ?? string.Empty).Trim();
+            string email = (TxtEmail.Text ?? string.Empty).Trim();
+            int year = 1;
+            int.TryParse((TxtYear.Text ?? string.Empty).Trim(), out year);
+
+            var s = new Student
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                year = year,
+                Email = email
+                
+            };
+            _db.Students.Add(s);
+            _db.SaveChanges();
+
+            _students.Add(s);
+            StudentsGrid.SelectedItem = s;
+            StudentsGrid.ScrollIntoView(s);
+
+            TxtFirstName.Text = string.Empty;
+            TxtLastName.Text = string.Empty;
+            TxtEmail.Text = string.Empty;
+            TxtYear.Text = string.Empty;
+            }
+            private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
+        }
+        private void BtnDeleteSelected_Click(object sender, RoutedEventArgs e)
+        {
+            
+            if (StudentsGrid.SelectedItem is Student s)
+            {
+                var result = MessageBox.Show(this, $"Do you really want to delete student {s.FirstName} {s.LastName}?", "Delete student", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _db.Students.Remove(s);
+                    _db.SaveChanges();
+                    _students.Remove(s);
+                }
+            }
         }
     }
 }

@@ -31,6 +31,6 @@ namespace StudentWPF.Data
         [Required]
         [StringLength(100)]
         public string Email { get; set; } = string.Empty;
-        public DateTime CreateAt { get; set; } = DateTime.Now;
+        public DateTime CreateAt { get; set; } = DateTime.UtcNow;
     }
 }
